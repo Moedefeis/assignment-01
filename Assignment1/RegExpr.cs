@@ -4,36 +4,29 @@ namespace Assignment1;
 
 public static class RegExpr
 {
-    public static IEnumerable<string> SplitLine(IEnumerable<string> lines)
-    {
+    public static IEnumerable<string> SplitLine(IEnumerable<string> lines){
         Regex reg = new Regex(@"[a-zA-Z0-9]+");
-        foreach (var line in lines)
-        {
+        foreach(var line in lines){
             var matches = reg.Matches(line).Cast<Match>().Select(m => m.Value).ToArray();
-            foreach (var match in matches)
-            {
+            foreach(var match in matches){
                 yield return match;
             }
         }
     }
 
-    public static IEnumerable<(int width, int height)> Resolution(string resolutions)
-    {
+    public static IEnumerable<(int width, int height)> Resolution(string resolutions){
         Regex reg = new Regex(@"((?<first>[0-9]{3,4})x(?<second>[0-9]{3,4}))");
         var matches = reg.Matches(resolutions);
-        foreach (Match match in matches)
-        {
-            yield return (int.Parse(match.Groups["first"].Value), int.Parse(match.Groups["second"].Value));
+        foreach(Match match in matches){
+            yield return (int.Parse(Convert.ToString(match.Groups["first"])), int.Parse(Convert.ToString(match.Groups["second"])));
         }
     }
 
-    public static IEnumerable<string> InnerText(string html, string tag)
-    {
-        Regex reg = new Regex(@$"<({tag})>(.*?)<\/\1>");
+    public static IEnumerable<string> InnerText(string html, string tag){
+        Regex reg = new Regex(@$"<({tag}).*?>(.*?)<\/\1>");
         var matches = reg.Matches(html);
-        foreach (Match match in matches)
-        {
-            yield return Regex.Replace(match.Groups[2].Value, @"</?.*?>", String.Empty);
+        foreach(Match match in matches){
+            yield return Regex.Replace(Convert.ToString(match.Groups[2]), @"</?.*?>", String.Empty);
         }
     }
 
