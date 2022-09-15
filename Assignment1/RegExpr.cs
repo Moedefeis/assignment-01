@@ -18,7 +18,7 @@ public static class RegExpr
         Regex reg = new Regex(@"((?<first>[0-9]{3,4})x(?<second>[0-9]{3,4}))");
         var matches = reg.Matches(resolutions);
         foreach(Match match in matches){
-            yield return (int.Parse(Convert.ToString(match.Groups["first"])), int.Parse(Convert.ToString(match.Groups["second"])));
+            yield return (int.Parse(match.Groups["first"].Value), int.Parse(match.Groups["second"].Value));
         }
     }
 
@@ -26,13 +26,13 @@ public static class RegExpr
         Regex reg = new Regex(@$"<({tag}).*?>(.*?)<\/\1>");
         var matches = reg.Matches(html);
         foreach(Match match in matches){
-            yield return Regex.Replace(Convert.ToString(match.Groups[2]), @"</?.*?>", String.Empty);
+            yield return Regex.Replace(match.Groups[2].Value, @"</?.*?>", String.Empty);
         }
     }
 
     public static IEnumerable<(Uri url, string title)> Urls(string html)
     {
-        var reg = new Regex("<(?<tag>\\w+).*?((?<url>https?:\\/\\/\\S+(?=\\\")).*?|(title=\"(?<title>\\S+)\").*?){1,2}>([\\w \\n]+<\\/\\w+>)?");
+        var reg = new Regex("<(?<tag>\\w+).*?((?<url>https?:\\/\\/\\S+(?=\\\")).*?|(title=\"(?<title>\\S+)\").*?){1,2}>([\\w \\n<>\\/]+<\\/(\\k<tag>)>)?");
         var matches = reg.Matches(html);
         foreach (Match match in matches.Cast<Match>())
         {

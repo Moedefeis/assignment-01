@@ -61,4 +61,24 @@ public class RegExprTests
 
         Assert.Equal(expected, actual);
     }
+
+    [Fact]
+    public void Urls_given_html_with_all_matches_having_no_title_returns_list_of_tuples()
+    {
+        var html = "<tag text href=\"http://link.com\" text> inner text <div> inner inner text </div></tag>" +
+            "\r\n<tag text href=\"http://link.com\" text> inner text </tag>" +
+            "\r\n<tag text href=\"http://link.com\" text> inner text </tag>" +
+            "\r\n<tag text href=\"http://link.com\" text> inner text </tag>";
+
+        var expected = new List<(Uri, string)> 
+        {
+            (new("http://link.com"), " inner text  inner inner text "),
+            (new("http://link.com"), " inner text "),
+            (new("http://link.com"), " inner text "),
+            (new("http://link.com"), " inner text "),
+        };
+        var actual = RegExpr.Urls(html);
+
+        Assert.Equal(expected, actual);
+    }
 }
