@@ -39,6 +39,12 @@ public class RegExprTests
     }
 
     [Fact]
+    public void InnerTextGivenStringWithNestedTagsWithinTargetTagsReturnsOneElementWithoutAnyNestedTags(){
+        var html = "<div><p>The phrase <i>regular expressions</i> (and consequently, regexes) is often used to mean the specific, standard textual syntax for representing <u>patterns</u> that matching <em>text</em> need to conform to.</p></div>";
+        Assert.Equal(new List<string>{"The phrase regular expressions (and consequently, regexes) is often used to mean the specific, standard textual syntax for representing patterns that matching text need to conform to."}, RegExpr.InnerText(html, "p"));
+    }
+
+    [Fact]
     public void Urls_given_html_with_all_matches_having_title_returns_list_of_tuples()
     {
         var html = "<tag text href=\"http://link.com\" text title=\"hej\" text>" +
