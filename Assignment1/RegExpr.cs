@@ -23,7 +23,7 @@ public static class RegExpr
         var matches = reg.Matches(resolutions);
         foreach (Match match in matches)
         {
-            yield return (int.Parse(Convert.ToString(match.Groups["first"])), int.Parse(Convert.ToString(match.Groups["second"])));
+            yield return (int.Parse(match.Groups["first"].Value), int.Parse(match.Groups["second"].Value));
         }
     }
 
@@ -33,7 +33,7 @@ public static class RegExpr
         var matches = reg.Matches(html);
         foreach (Match match in matches)
         {
-            yield return Regex.Replace(Convert.ToString(match.Groups[2]), @"</?.*?>", String.Empty);
+            yield return Regex.Replace(match.Groups[2].Value, @"</?.*?>", String.Empty);
         }
     }
 
